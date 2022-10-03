@@ -7,6 +7,7 @@ main_win.geometry("1000x500")
 main_win.sourceFolder = ''
 main_win.sourceFile = ''
 
+#for selecting the desire directory
 def chooseDir():
     main_win.sourceFolder =  filedialog.askdirectory(parent=main_win, initialdir= "/", title='Please select a directory')
 
@@ -14,7 +15,7 @@ b_chooseDir = tkinter.Button(main_win, text = "Chose Folder", width = 20, height
 b_chooseDir.place(x = 50,y = 50)
 b_chooseDir.width = 100
 
-
+#to select a particular file 
 def chooseFile():
     main_win.sourceFile = filedialog.askopenfilename(parent=main_win, initialdir= "/", title='Please select a directory')
 

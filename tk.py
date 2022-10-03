@@ -26,7 +26,7 @@ print ("\nfile_path_variable = ", file_path_variable )
 
 #Define path to image
 path_to_images = file_path_variable
-
+#change the path accorddingly
 print(path_to_images)
 
 #Point tessaract_cmd to tessaract.exe

@@ -3,7 +3,7 @@ import pytesseract
 from pytesseract import pytesseract
 import os
 
-#Define path to tessaract.exe
+#Define path to tessaract.exe (default location is defined below)
 path_to_tesseract = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 #Define path to image
