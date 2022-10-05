@@ -1,25 +1,30 @@
+from pickle import TRUE
+import PIL
 from PIL import Image
+import tkinter
+from tkinter import MULTIPLE, messagebox
+from tkinter import filedialog
 import pytesseract
 from pytesseract import pytesseract
 import os
 
-#Define path to tessaract.exe (default location is defined below)
+# Define path to tessaract.exe (default location is defined below)
 path_to_tesseract = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
-#Define path to image
-path_to_images = r'images/'
-#saving path of the file location 
-
-#Point tessaract_cmd to tessaract.exe
+# Point tessaract_cmd to tessaract.exe
 pytesseract.tesseract_cmd = path_to_tesseract
 
-for root, dirs, file_names in os.walk(path_to_images):
-    #Iterate over each file_name in the folder
-    for file_name in file_names:
-        #Open image with PIL
-        img = Image.open(path_to_images + file_name)
+# Define path to image
+path_to_images = filedialog.askopenfilename(multiple=True)
+# saving path of the file location
+#print(path_to_images)
 
-        #Extract text from image
-        text = pytesseract.image_to_string(img)
+for i in path_to_images:
+#     #Iterate over each file_name in the folder
+     img=r"{}".format(i)
+     
+#         #Open image with PIL
+    #  print(img)
+     text_data = pytesseract.image_to_string(img ,lang='eng')
 
-        print(text)
+     print(text_data)
