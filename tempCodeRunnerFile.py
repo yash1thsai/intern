@@ -21,10 +21,10 @@ path_to_images = filedialog.askopenfilename(multiple=True)
 
 for i in path_to_images:
 #     #Iterate over each file_name in the folder
-     img=r"{}".format(i)
+     img= PIL.Image.open(r"{}".format(i))
      
 #         #Open image with PIL
     #  print(img)
-     text_data = pytesseract.image_to_string(img ,lang='eng')
+     text_data = pytesseract.image_to_string(img.convert('RGB') ,lang='eng')
 
      print(text_data)
