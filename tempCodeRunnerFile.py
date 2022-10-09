@@ -17,14 +17,12 @@ pytesseract.tesseract_cmd = path_to_tesseract
 # Define path to image
 path_to_images = filedialog.askopenfilename(multiple=True)
 # saving path of the file location
-#print(path_to_images)
-
 for i in path_to_images:
-#     #Iterate over each file_name in the folder
-     img= PIL.Image.open(r"{}".format(i))
-     
-#         #Open image with PIL
-    #  print(img)
-     text_data = pytesseract.image_to_string(img.convert('RGB') ,lang='eng')
+    #     #Iterate over each file_name in the folder
+    
+    img = PIL.Image.open(r"{}".format(i))
 
-     print(text_data)
+    # Open image with PIL
+    text_data = pytesseract.image_to_string(img.convert('RGB'), lang='eng')
+
+    print(text_data)
