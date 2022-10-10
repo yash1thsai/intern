@@ -44,17 +44,14 @@ for file_name in path_to_images:
            print(text)
     
     
-    if docx:
-        def extract_text_from_docx(path):
-            txt = docx2txt.process(path)
-            if txt:
-                return txt.replace('\t', ' ')
-            return None
-        if __name__ == '__main__':
-           # Extracted text data from docx files
-           text = extract_text_from_docx(path)
-           print(text)
-    if doc:
+    elif docx:
         text = tp.process(path)
         text=text.decode("utf-8")
         print(text)
+        
+    elif doc:
+        text = tp.process(path)
+        text=text.decode("utf-8")
+        print(text)
+    else:
+      print("Enter file in correct formatt.")
