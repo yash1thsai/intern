@@ -1,3 +1,8 @@
+import re
+import os
+import sys
+import win32com.client as win32
+from win32com.client import constants
 from pdfminer.high_level import extract_text
 import subprocess
 import sys
@@ -13,6 +18,10 @@ from tkinter import filedialog
 import pytesseract
 from pytesseract import pytesseract
 import os
+from glob import glob
+import win32com.client as win32
+from win32com.client import constants
+import textractplus as tp
 
 # Define path to tessaract.exe (default location is defined below)
 path_to_tesseract = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
@@ -26,24 +35,6 @@ path_to_images = filedialog.askopenfilename(multiple=True)
 for i in path_to_images:
     #     #Iterate over each file_name in the folder
     # Changing path into String
-    path = r"{}".format(i)
-    # Checkin for PDF
-    img = re.findall(".pdf", path)
-    if img:
-        def extract_text_from_pdf(path):
-            return extract_text(path)
-        if __name__ == '__main__':
-           text = extract_text_from_pdf(path)  # Extracted data from pdf files
-
-    # Checking for Docx formated files
-    img = re.findall(".docx", path)
-    if img:
-        def extract_text_from_docx(path):
-            txt = docx2txt.process(path)
-            if txt:
-                return txt.replace('\t', ' ')
-            return None
-        if __name__ == '__main__':
-           # Extracted text data from docx files
-           text = extract_text_from_docx(path)
-           print(text)
+  file_path = r"{}".format(i)
+  text = tp.process(file_path)
+  print(text)
