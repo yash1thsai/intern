@@ -1,7 +1,6 @@
 from pdfminer.high_level import extract_text
 import subprocess
 import sys
-import docx2txt
 import re
 import fnmatch
 from pickle import TRUE
@@ -10,16 +9,8 @@ from PIL import Image
 import tkinter
 from tkinter import MULTIPLE, messagebox
 from tkinter import filedialog
-import pytesseract
-from pytesseract import pytesseract
 import os
 import textractplus as tp
-
-# Define path to tessaract.exe (default location is defined below)
-path_to_tesseract = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-
-# Point tessaract_cmd to tessaract.exe
-pytesseract.tesseract_cmd = path_to_tesseract
 
 # Define path to image
 path_to_images = filedialog.askopenfilename(multiple=True)  # saving path of the file location
@@ -36,25 +27,33 @@ for file_name in path_to_images:
     
     doc = re.findall(".doc", path)             # Checking for Doc formated files
     
+    PHONE_REG = re.compile(r'[\+\(]?[1-9][0-9 .\-\(\)]{8,}[0-9]')   #Regular expression for phon no
+    
+    def extract_phone_number(resume_text):
+        phone = re.findall(PHONE_REG, resume_text)
+ 
+        if phone:
+           number = ''.join(phone[0])
+ 
+           if resume_text.find(number) >=0  and len(number) < 16:
+              return number
+        return None
+    
     if pdf:
         def extract_text_from_pdf(path):
             return extract_text(path)
         if __name__ == '__main__':
            text = extract_text_from_pdf(path)  # Extracted data from pdf files
-           print(text)
+           phone_number=extract_phone_number(text)
+           print(phone_number)
     
-    
-    if docx:
-        def extract_text_from_docx(path):
-            txt = docx2txt.process(path)
-            if txt:
-                return txt.replace('\t', ' ')
-            return None
+    elif docx or doc:
+        def extract_text_from_doc_docx(path):  #Extract data from doc or docx files
+          text = tp.process(path)
+          return text.decode("utf-8")
         if __name__ == '__main__':
-           # Extracted text data from docx files
-           text = extract_text_from_docx(path)
-           print(text)
-    if doc:
-        text = tp.process(path)
-        text=text.decode("utf-8")
-        print(text)
+           text=extract_text_from_doc_docx (path)
+           phone_number=extract_phone_number(text)
+           print(phone_number)
+    else:
+      print("Enter file in correct formatt.")
