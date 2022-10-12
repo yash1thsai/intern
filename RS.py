@@ -1,6 +1,6 @@
 
 import docx2txt
-from docx2txt import PdfFileReader, PdfFileWriter, PdfFileMerger
+from PyPDF2 import PdfFileReader, PdfFileWriter, PdfFileMerger
 
 #Extracting text from DOCX
 def doctotext(m):

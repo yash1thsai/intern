@@ -9,10 +9,14 @@ import tkinter
 from tkinter import MULTIPLE, messagebox
 from tkinter import filedialog
 import os
-import textractplus as tp
+from tesseract import textractplus as tp
 import nltk
 from nltk import ne_chunk, pos_tag, word_tokenize
 import spacy
+from nltk import nlp
+from spacy.matcher import matcher
+
+from nltk import en_core_web_sm
 
 # Define path to image
 path_to_images = filedialog.askopenfilename(multiple=True)  # saving path of the file location
@@ -28,19 +32,26 @@ for file_name in path_to_images:
     docx = re.findall(".docx", path)          # Checking for Docx formated files
     
     doc = re.findall(".doc", path)             # Checking for Doc formated files
-    def extract_entities(text):
-        for sent in nltk.sent_tokenize(text):
-            for chunk in nltk.ne_chunk(nltk.pos_tag(nltk.word_tokenize(sent))):
-                if hasattr(chunk, 'node'):
-                   return chunk.node, ' '.join(c[0] for c in chunk.leaves())
+
+    def extract_name(resume_text):
+        nlp_text = nlp(resume_text)
     
+        # First name and Last name are always Proper Nouns
+        pattern = [{'POS': 'PROPN'}, {'POS': 'PROPN'}]
+        
+        matcher.add('NAME', None, pattern)
+    
+        matches = matcher(nlp_text)
+    
+        for match_id, start, end in matches:
+           span = nlp_text[start:end]
+        return span.text
     if pdf:
         def extract_text_from_pdf(path):
             return extract_text(path)
         if __name__ == '__main__':
            text = extract_text_from_pdf(path)  # Extracted data from pdf files   
-           tokens = nltk.word_tokenize(text)
-           tagged = nltk.pos_tag(tokens)
-           entities = nltk.chunk.ne_chunk(tagged)
-           print(entities) 
-          # print(extract_entities(text))
+           
+
+
+           text= extract_name(text)
