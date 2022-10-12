@@ -1,47 +1,46 @@
+from pdfminer.high_level import extract_text
+import subprocess
+import sys
+import docx2txt
+import re
+import fnmatch
+from pickle import TRUE
 import tkinter
-from PIL import Image
-from pytesseract import pytesseract
+from tkinter import MULTIPLE, messagebox
 from tkinter import filedialog
 import os
+import textractplus as tp
+import nltk
+from nltk import ne_chunk, pos_tag, word_tokenize
+import spacy
 
-#Define path to tessaract.exe
-path_to_tesseract = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+# Define path to image
+path_to_images = filedialog.askopenfilename(multiple=True)  # saving path of the file location
 
-
-
-root = tkinter.Tk()
-root.withdraw() #use to hide tkinter window
-
-def search_for_file_path ():
-    currdir = os.getcwd()
-    tempdir = filedialog.askdirectory(parent=root, initialdir=currdir, title='Please select a directory')
-    if len(tempdir) > 0:
-        print ("You chose: %s" % tempdir)
-    return tempdir
-
-
-file_path_variable = search_for_file_path()
-print ("\nfile_path_variable = ", file_path_variable )
-
-
-#Define path to image
-path_to_images = file_path_variable
-#change the path accorddingly
-print(path_to_images)
-
-#Point tessaract_cmd to tessaract.exe
-pytesseract.tesseract_cmd = path_to_tesseract
-
-for root, dirs, file_names in os.walk(path_to_images):
-    #Iterate over each file_name in the folder
-    for file_name in file_names:
-        #Open image with PIL
-        img = Image.open(path_to_images +'/'+ file_name)
-
-        #Extract text from image
-        text = pytesseract.image_to_string(img)
-
-        print(text)
-
-
-
+#Iterate over each file_name in the folder
+for file_name in path_to_images:
+   
+    
+    path = r"{}".format(file_name)     # Changing path into String
+    
+    pdf = re.findall(".pdf", path)           # Checkin for PDF file
+     
+    docx = re.findall(".docx", path)          # Checking for Docx formated files
+    
+    doc = re.findall(".doc", path)             # Checking for Doc formated files
+    def extract_entities(text):
+        for sent in nltk.sent_tokenize(text):
+            for chunk in nltk.ne_chunk(nltk.pos_tag(nltk.word_tokenize(sent))):
+                if hasattr(chunk, 'node'):
+                   return chunk.node, ' '.join(c[0] for c in chunk.leaves())
+    
+    if pdf:
+        def extract_text_from_pdf(path):
+            return extract_text(path)
+        if __name__ == '__main__':
+           text = extract_text_from_pdf(path)  # Extracted data from pdf files   
+           tokens = nltk.word_tokenize(text)
+           tagged = nltk.pos_tag(tokens)
+           entities = nltk.chunk.ne_chunk(tagged)
+           print(entities) 
+          # print(extract_entities(text))
